@@ -6,7 +6,7 @@
 #include "Guide.h"              // 가이드표 헤더파일
 //#include "Player_info.h"        // 플레이어 정보 헤더파일
 //#include "Pokemon_classes.h"
-
+#include "Map.h"
 using namespace std;
 
 int main()
@@ -14,9 +14,16 @@ int main()
     SetConsoleOutputCP(65001);
     SetConsoleCP(65001);
 
+    MapData gameMap;
+    initMap(gameMap);
+
+    // 사용자 시작 위치: 맵 정가운데
+    int playerX = MAP_WIDTH / 2;
+    int playerY = MAP_HEIGHT / 2;
+
     bool isPlaying = true; // 게임 플레이 화면 상태
 
-    cout << "WASD 또는 방향키를 눌러보세요. (종료: ESC 키)\n\n";
+    renderGameScreen(gameMap, playerX, playerY);
 
     while (isPlaying)
     {
@@ -80,30 +87,47 @@ int main()
                     }
                 }
 
-                // 메뉴에서 완전히 빠져나올 때 화면 정리
-                system("cls");
-                cout << "WASD 또는 방향키를 눌러보세요. (종료: ESC 키)\n\n";
-            }
-            // 방향키 입력 처리 -> 추후 맵과 플레이어 위치 설정 시 키입력에 따른 이동 구현으로 수정예정
-            else if (key == 224 || key == 0)
-            {
-                int subKey = _getch();
-                switch (subKey)
+                // 메뉴에서 완전히 빠져나올 때 화면 정리(수정 11/22)
+                if (isPlaying)
                 {
-                case 72: cout << "위"; break;
-                case 80: cout << "아래"; break;
-                case 75: cout << "왼쪽"; break;
-                case 77: cout << "오른쪽"; break;
+                    renderGameScreen(gameMap, playerX, playerY);
                 }
             }
-            // 일반 키 입력 처리
+            // 방향키 입력 처리 (맵 구현에 따라 수정 11/22)
             else
             {
-                char ch = tolower(key);
-                if (ch == 'w') cout << "W" << endl;
-                else if (ch == 'a') cout << "A" << endl;
-                else if (ch == 's') cout << "S" << endl;
-                else if (ch == 'd') cout << "D" << endl;
+                char inputChar = '\0';//쓰레기값 방지
+
+                // 방향키(224 또는 0)와 WASD를 동일한 문자로 통합
+                if (key == 224 || key == 0)
+                {
+                    int subKey = _getch();
+                    if (subKey == 72)      inputChar = 'w'; // 위
+                    else if (subKey == 80) inputChar = 's'; // 아래
+                    else if (subKey == 75) inputChar = 'a'; // 왼쪽
+                    else if (subKey == 77) inputChar = 'd'; // 오른쪽
+                }
+                else
+                {
+                    char ch = tolower(key);
+                    if (ch == 'w' || ch == 'a' || ch == 's' || ch == 'd')
+                    {
+                        inputChar = ch; // WASD 이동
+                    }
+                    else if (ch == 'y' || ch == 'n')
+                    {
+                        inputChar = ch; // 야생 포켓몬 포획 여부 선택
+                    }
+                    else
+                    {
+                        inputChar = ch; // 그 외 키 입력도 handlePlayerInput으로 전달
+                    }
+                }
+
+                if (inputChar != '\0' && handlePlayerInput(gameMap, playerX, playerY, inputChar))
+                {
+                    renderGameScreen(gameMap, playerX, playerY);
+                }
             }
         }
 
