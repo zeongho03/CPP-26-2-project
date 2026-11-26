@@ -5,18 +5,13 @@
             "label": "C/C++: g++.exe build active file",
             "command": "C:\\msys64\\ucrt64\\bin\\g++.exe",
             "args": [
+                "-fdiagnostics-color=always",
+                "-finput-charset=utf-8",
+                "-fexec-charset=utf-8",
                 "-g",
-                "Main.cpp",
-                "Guide.cpp",
-                "Map.cpp",
-                "Type_Effectiveness.cpp",
+                "${file}",
                 "-o",
-                "TestGame.exe",
-                "&&",
-                "start",
-                "cmd.exe",
-                "/k",
-                "TestGame.exe"
+                "${fileDirname}\\${fileBasenameNoExtension}.exe"
             ],
             "options": {
                 "cwd": "${fileDirname}"
