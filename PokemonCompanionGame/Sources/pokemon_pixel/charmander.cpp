@@ -199,6 +199,8 @@ const vector<string> ursaring = {
     "                          ⬛  ⬛                         "
 };
 
+//깜지곰 픽셀 아트
+
 // 포켓몬 공통 출력 함수
 void printPokemon(const vector<string>& pokemon) {
 

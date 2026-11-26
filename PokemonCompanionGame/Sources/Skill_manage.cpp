@@ -47,9 +47,9 @@ vector<string> getLearnableSkills(const string& pokemonName) {
         return {"할퀴기", "베어가르기", "힘껏치기", "이판사판태클", "속여때리기", 
             "치근거리기", "지진"};
     }
-    else if (pokemonName == "다투곰"){
-        return {"할퀴기", "베어가르기", "힘껏치기", "이판사판태클", "속여때리기", 
-            "치근거리기", "지진", "10만마력", "인파이트", "깨물어부수기", "하품"};
+    //다투곰 삭제 -> 깜지곰으로 대체(링곰의 진화전 형태)
+    else if (pokemonName == "깜지곰"){
+        return {"할퀴기", "보복", "베어가르기"};
     }
     else if (pokemonName == "랄토스"){
         return {"염동력", "사이코쇼크", "드레인키스"};
@@ -144,6 +144,7 @@ Skill getSkillData(const string& name) {
     if (name == "나쁜음모") return {"나쁜음모", "악", "buff", 0, 20, 3, 2};         // 특수공격(3) 2단계 상승
     if (name == "속여때리기") return {"속여때리기", "악", "physical", 60, 20, 0, 0};
     if (name == "깨물어부수기") return {"깨물어부수기", "악", "physical", 80, 15, 0, 0};
+    if (name == "보복") return {"보복", "악", "physical", 50, 10, 0, 0}; // 후공 시 위력 x 2 구현예정
     
     // --- 고스트 타입 ---
     if (name == "섀도클로") return {"섀도클로", "고스트", "physical", 70, 15, 0, 0};
